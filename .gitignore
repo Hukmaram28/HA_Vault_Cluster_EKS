@@ -3,3 +3,4 @@ cluster/.terraform
 cluster/.terraform.lock.hcl
 cluster/terraform.tfstate
 cluster/terraform.tfstate.backup
+.DS_Store
