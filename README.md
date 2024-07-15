@@ -124,10 +124,10 @@ Follow the steps below to set up the vault cluster:
 
     Install Vault by providing the overridevalues.yaml:
 
-   ```
-   helm install vault hashicorp/vault \
-   -f ./vault/overridevalues.yaml -n vault
-   ```
+```
+helm install vault hashicorp/vault \
+-f ./vault/overridevalues.yaml -n vault
+```
 
 12. **Handling PVC Issues**
 
@@ -154,15 +154,14 @@ kubectl exec --stdin=true --tty=true vault-0 -n vault -- vault operator unseal
 
 Run the following commands to join other Vault pods to the Vault cluster:
 
-````
- kubectl exec -ti vault-1 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
- kubectl exec -ti vault-1 -n vault -- vault operator unseal
- kubectl exec -ti vault-2 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
- kubectl exec -ti vault-2 -n vault -- vault operator unseal
-   ```
+```
+kubectl exec -ti vault-1 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
+kubectl exec -ti vault-1 -n vault -- vault operator unseal
+kubectl exec -ti vault-2 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
+kubectl exec -ti vault-2 -n vault -- vault operator unseal
+```
 
 Now we are all set up with a High Availability Vault cluster in AWS EKS! We can login to vault UI using token generated at the vault initialization time.
-
 
 # MORE
 
@@ -171,10 +170,10 @@ Now we are all set up with a High Availability Vault cluster in AWS EKS! We can 
 2- We can attach certificate to the Load balancer by storing it in ACM.
 
 3. Additional commands-
-```export VAULT_TOKEN=""```
-varify the other vault pods
-```vault operator members```
-```vault operator raft list-peers```
+   `export VAULT_TOKEN=""`
+   varify the other vault pods
+   `vault operator members`
+   `vault operator raft list-peers`
 
 ![More](./images/members.png)
 
@@ -183,4 +182,3 @@ varify the other vault pods
 5. After restarting vault server we need to unseal it everytime.
 
 6. we can use various backend storages for storing secrets such as gp2, s3, dynamodb etc.
-````
