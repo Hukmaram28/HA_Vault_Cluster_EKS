@@ -165,9 +165,9 @@ Now we are all set up with a High Availability Vault cluster in AWS EKS! We can 
 
 # MORE
 
-1: When deploying HA vault in VMs (i.e without kubernetes), It can be configured to auto join new Nodes to the HA cluster with the help of vault config.hcl file. New nodes can be auto created using an auto-scaling group and those can be setup to auto unseal as well with the help of user data scripts. A load balancer with a taget group to the vault VMs/ASG can be setup with a tls certificate.
+1. When deploying HA vault in VMs (i.e without kubernetes), It can be configured to auto join new Nodes to the HA cluster with the help of vault config.hcl file. New nodes can be auto created using an auto-scaling group and those can be setup to auto unseal as well with the help of user data scripts. A load balancer with a taget group to the vault VMs/ASG can be setup with a tls certificate.
 
-2- We can attach certificate to the Load balancer by storing it in ACM.
+2. We can attach certificate to the Load balancer by storing it in ACM.
 
 3. Additional commands-
    `export VAULT_TOKEN=""`
