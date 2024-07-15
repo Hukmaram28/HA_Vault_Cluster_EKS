@@ -179,6 +179,6 @@ Now we are all set up with a High Availability Vault cluster in AWS EKS! We can 
 
 4. If the leader node is stopped then it will be removed from the HA cluster and one of the follower nodes become the leade node/active node. By defaul the leade node is in active mode and followers nodes are in passive mode and they redirect the requests to the leader node to respond.
 
-5. After restarting vault server we need to unseal it everytime.
+5. After restarting vault server we need to unseal it everytime when auto unseal is not enabled.
 
 6. we can use various backend storages for storing secrets such as gp2, s3, dynamodb etc.
