@@ -124,17 +124,17 @@ Follow the steps below to set up the vault cluster:
 
     Install Vault by providing the overridevalues.yaml:
 
-````
- helm install vault hashicorp/vault \
- -f ./vault/overridevalues.yaml -n vault
- ```
+   ```
+   helm install vault hashicorp/vault \
+   -f ./vault/overridevalues.yaml -n vault
+   ```
 
 12. **Handling PVC Issues**
 
- If the PVC is unable to create and is stuck, delete the existing storage class and recreate it with the binding mode set to Immediate using:
- `./vault/gp2.yaml`
+If the PVC is unable to create and is stuck, delete the existing storage class and recreate it with the binding mode set to Immediate using:
+`./vault/gp2.yaml`
 
- ![ERROR!](./images/pvc_error.png)
+![ERROR!](./images/pvc_error.png)
 
 13. **Unseal Vault for the First Time**
 
@@ -152,14 +152,14 @@ kubectl exec --stdin=true --tty=true vault-0 -n vault -- vault operator unseal
 
 14. **Join Other Vault Pods to the Cluster**
 
- Run the following commands to join other Vault pods to the Vault cluster:
+Run the following commands to join other Vault pods to the Vault cluster:
 
+````
+ kubectl exec -ti vault-1 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
+ kubectl exec -ti vault-1 -n vault -- vault operator unseal
+ kubectl exec -ti vault-2 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
+ kubectl exec -ti vault-2 -n vault -- vault operator unseal
    ```
-    kubectl exec -ti vault-1 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
-    kubectl exec -ti vault-1 -n vault -- vault operator unseal
-    kubectl exec -ti vault-2 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
-    kubectl exec -ti vault-2 -n vault -- vault operator unseal
-      ```
 
 Now we are all set up with a High Availability Vault cluster in AWS EKS! We can login to vault UI using token generated at the vault initialization time.
 
@@ -171,15 +171,16 @@ Now we are all set up with a High Availability Vault cluster in AWS EKS! We can 
 2- We can attach certificate to the Load balancer by storing it in ACM.
 
 3. Additional commands-
-   ```export VAULT_TOKEN=""```
-   varify the other vault pods
-   ```vault operator members```
-   ```vault operator raft list-peers```
+```export VAULT_TOKEN=""```
+varify the other vault pods
+```vault operator members```
+```vault operator raft list-peers```
 
-   ![More](./images/members.png)
+![More](./images/members.png)
 
 4. If the leader node is stopped then it will be removed from the HA cluster and one of the follower nodes become the leade node/active node. By defaul the leade node is in active mode and followers nodes are in passive mode and they redirect the requests to the leader node to respond.
 
 5. After restarting vault server we need to unseal it everytime.
 
 6. we can use various backend storages for storing secrets such as gp2, s3, dynamodb etc.
+````
