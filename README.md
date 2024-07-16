@@ -80,7 +80,8 @@ Follow the steps below to set up the vault cluster:
    --role-only \
    --role-name AmazonEKS_EBS_CSI_DriverRole_Vault --region us-east-1
    ```
-![alt text](./images/image.png)
+
+   ![alt text](./images/image.png)
 
    ```
    eksctl create addon \
@@ -88,7 +89,8 @@ Follow the steps below to set up the vault cluster:
    --cluster vault-cluster \
    --service-account-role-arn arn:aws:iam::$(aws sts get-caller-identity --query Account --output text):role/AmazonEKS_EBS_CSI_DriverRole_Vault --region us-east-1
    ```
-![alt text](./images/image-1.png)
+
+   ![alt text](./images/image-1.png)
 
 7. **Add the Helm Repository**
 
@@ -124,6 +126,7 @@ Follow the steps below to set up the vault cluster:
 helm install vault hashicorp/vault \
 -f ./vault/overridevalues.yaml -n vault
 ```
+
 ![alt text](./images/image-3.png)
 ![alt text](./images/image-4.png)
 
@@ -131,9 +134,9 @@ helm install vault hashicorp/vault \
 
 If the PVC is unable to create and is stuck, delete the existing storage class and recreate it with the binding mode set to Immediate using:
 `./vault/gp2.yaml`
-   Run below commands:
-   `kubectl delete sc gp2`
-   `kubectl apply -f ./vault/gp2.yaml`
+Run below commands:
+`kubectl delete sc gp2`
+`kubectl apply -f ./vault/gp2.yaml`
 
 ![ERROR!](./images/pvc_error.png)
 ![alt text](./images/image-2.png)
@@ -145,6 +148,7 @@ Execute the following commands to unseal the Vault, enabling it to store keys in
 ```
 kubectl exec --stdin=true --tty=true vault-0 -n vault -- vault operator init
 ```
+
 The above command will generate 5 Recovery keys and Initial root token, keep a note of them.
 ![alt text](./images/image-5.png)
 
@@ -153,6 +157,7 @@ Run the command below three times and enter any of three recovery keys obtained 
 ```
 kubectl exec --stdin=true --tty=true vault-0 -n vault -- vault operator unseal
 ```
+
 ![alt text](./images/image-6.png)
 
 14. **Join Other Vault Pods to the Cluster**
@@ -165,8 +170,8 @@ kubectl exec -ti vault-1 -n vault -- vault operator unseal
 kubectl exec -ti vault-2 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
 kubectl exec -ti vault-2 -n vault -- vault operator unseal
 ```
-![alt text](./images/image-7.png)
 
+![alt text](./images/image-7.png)
 
 Now we are all set up with a High Availability Vault cluster in AWS EKS! We can login to vault UI using token generated at the vault initialization time.
 ![alt text](./images/image-9.png)
@@ -178,14 +183,20 @@ Now we are all set up with a High Availability Vault cluster in AWS EKS! We can 
 2. We can attach certificate to the Load balancer by storing it in ACM.
 
 3. Additional commands-
-   `export VAULT_TOKEN=""`
+   ```
+   export VAULT_TOKEN=""
+   ```
    varify the other vault pods
-   `vault operator members`
-   `vault operator raft list-peers`
+   ```
+   vault operator members
+   ```
+   ```
+   vault operator raft list-peers
+   ```
 
 ![More](./images/image-8.png)
 
-4. If the leader node is stopped then it will be removed from the HA cluster and one of the follower nodes become the leade node/active node. By defaul the leade node is in active mode and followers nodes are in passive mode and they redirect the requests to the leader node to respond.
+4. If the leader node is stopped then it will be removed from the HA cluster and one of the follower nodes become the leader node/active node. By defaul the leader node is in active mode and followers nodes are in passive mode and they redirect the requests to the leader node to respond.
 
 5. After restarting vault server we need to unseal it everytime when auto unseal is not enabled.
 
