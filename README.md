@@ -28,6 +28,8 @@ Follow the steps below to set up the vault cluster:
 
    This will create a cluster named `vault-cluster`. You can update the cluster name and other variables in the `variables.tf` file.
 
+   ![Cluster](./images/cluster.png)
+
 2. **Install Required Tools**
 
    Download and install the AWS CLI, eksctl, and kubectl locally if they are not already installed. Configure them for use.

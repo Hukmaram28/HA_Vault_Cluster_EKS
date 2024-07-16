@@ -12,3 +12,7 @@ This repository creates the following resources in AWS Cloud:
 - EKS cluster IAM role
 - An EKS cluster
 - Node Group and Node Group IAM role
+
+### Cluster Architecture 
+
+![Cluster Architecture](../images/cluster.png)
